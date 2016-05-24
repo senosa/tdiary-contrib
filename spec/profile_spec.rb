@@ -14,55 +14,29 @@ describe "Profile::Service" do
       OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
       # http://develop.github.com/p/general.html
-      @profile = Profile::Service::GitHub.new("schacon", :size => 40)
+      @profile = Profile::Service::GitHub.new("schacon")
     end
 
     it "should include name, mail, image properties" do
       expect(@profile.name).to eq("Scott Chacon")
       expect(@profile.mail).to eq("schacon@gmail.com")
-      expect(@profile.image).to eq("http://www.gravatar.com/avatar/9375a9529679f1b42b567a640d775e7d.jpg?s=40")
-    end
-  end
-
-  describe "Twitter" do
-    before do
-      allow_any_instance_of(Profile::Service::Twitter).to receive(:fetch).and_return(REXML::Document.new(File.read("spec/fixtures/twitter.xml")))
-
-      # http://twitter.com/tdiary
-      @profile = Profile::Service::Twitter.new("tdiary")
-    end
-
-    it "should include name, description, image properties" do
-      expect(@profile.name).to eq("tDiary.org")
-      expect(@profile.description).to eq("tDiaryオフィシャルアカウント")
-      expect(@profile.image).to match(%r{^http://.*\.(png|jpg)$})
-    end
-  end
-
-  describe "FriendFeed" do
-    before do
-      allow_any_instance_of(Profile::Service::FriendFeed).to receive(:fetch).and_return(REXML::Document.new(File.read("spec/fixtures/friendfeed.xml")))
-
-      # http://friendfeed.com/api/documentation#summary
-      @profile = Profile::Service::FriendFeed.new("bret")
-    end
-
-    it "should include name, description, image properties" do
-      expect(@profile.name).to eq("Bret Taylor")
-      expect(@profile.description).to eq("Ex-CTO of Facebook. Previously co-founder and CEO of FriendFeed. Programmer, food lover.")
-      expect(@profile.image).to eq("http://friendfeed-api.com/v2/picture/bret")
+      expect(@profile.image).to eq("https://avatars.githubusercontent.com/u/70?v=3")
     end
   end
 
   describe "Gravatar" do
-    # http://ja.gravatar.com/site/implement/url
+    # http://ja.gravatar.com/site/implement/hash/
 
     before do
+      require 'json'
+      allow_any_instance_of(Profile::Service::Gravatar).to receive(:fetch).and_return(JSON.parse(File.read("spec/fixtures/gravatar.json")))
+
       @profile = Profile::Service::Gravatar.new("iHaveAn@email.com")
     end
-
-    it "should include image property" do
-      expect(@profile.image).to eq("http://www.gravatar.com/avatar/3b3be63a4c2a439b013787725dfce802.jpg")
+    it "should include name, mail, image properties" do
+      expect(@profile.name).to eq("tDiary")
+      expect(@profile.mail).to eq("iHaveAn@email.com")
+      expect(@profile.image).to eq("http://2.gravatar.com/avatar/3b3be63a4c2a439b013787725dfce802")
     end
 
     context 'with options' do
@@ -71,7 +45,7 @@ describe "Profile::Service" do
       end
 
       it "should specify size option" do
-        expect(@profile.image).to eq("http://www.gravatar.com/avatar/3b3be63a4c2a439b013787725dfce802.jpg?s=40")
+        expect(@profile.image).to eq("http://2.gravatar.com/avatar/3b3be63a4c2a439b013787725dfce802?s=40")
       end
     end
   end

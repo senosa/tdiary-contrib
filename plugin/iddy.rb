@@ -47,7 +47,7 @@ def iddy( id )
 	nameroma = user.to_a( 'nameroma' )[0]
 	mail = user.to_a( 'mail' )[0]
 	submail = user.to_a( 'submail' )[0]
-	
+
 	html = '<div class="iddy">'
 	html << %Q|<a href="#{profileurl.text}">|
 	html << %Q|<span class="iddy-image"><img src="#{imageurl.text}" alt="image" width="96" height="96"></span>| if imageurl
@@ -75,7 +75,7 @@ def iddy_call_api( id, key )
 
 	proxy = @conf['proxy']
 	proxy = 'http://' + proxy if proxy
-	timeout( 3 ) do
+	Timeout.timeout( 3 ) do
 		open( request, :proxy => proxy ) {|f| f.read }
 	end
 end

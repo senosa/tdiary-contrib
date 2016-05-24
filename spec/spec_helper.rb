@@ -10,6 +10,20 @@ if ENV['COVERAGE'] == 'simplecov'
 end
 
 require 'erb'
+require 'webmock/rspec'
+require 'tmpdir'
+
+RSpec.configure do |c|
+	# create a temporary directory used by the plugin for cache
+	c.before(:all) do
+		@cache_path = Dir.mktmpdir
+	end
+
+	c.after(:all) do
+		FileUtils.rmtree(@cache_path)
+	end
+end
+
 # FIXME PluginFake in under construction.
 class PluginFake
   include ERB::Util
@@ -19,18 +33,24 @@ class PluginFake
 
 	def initialize
 		@conf = Config.new
+		@cache_path = ""
 		@mode = ""
 		@date = nil
 		@header_procs = []
 		@footer_procs = []
 		@update_procs = []
 		@conf_procs = []
+		@edit_procs = []
 		@body_enter_procs = []
 		@body_leave_procs = []
 	end
 
 	def add_conf_proc( key, label, genre=nil, &block )
 		@conf_procs << block
+	end
+
+	def add_edit_proc( block = Proc::new )
+		@edit_procs << block
 	end
 
 	def add_header_proc( block = Proc::new )
@@ -132,11 +152,11 @@ class PluginFake
 		end
 
 		def mobile_agent?
-			@cgi.mobile_agent?
+			false
 		end
 
     def smartphone?
-      @cgi.iphone?
+      false
     end
 
 		def bot?
@@ -149,7 +169,7 @@ class PluginFake
   end
 
 	def iphone?
-		@conf.cgi.iphone?
+		false
 	end
 	alias ipod? iphone?
 end
@@ -162,17 +182,11 @@ class CGIFake
 	end
 
 	def mobile_agent?
-		self.user_agent =~ %r[
-			^DoCoMo|
-			^(?:KDDI|UP\.Browser)|
-			^(?:J-(?:PHONE|EMULATOR)|Vodafone|SoftBank|MOT-|[VS]emulator)|
-			WILLCOM|DDIPOCKET|
-			PDXGW|ASTEL|Palmscape|Xiino|sharp\ pda\ browser|Windows\ CE|L-mode
-		]x
+		false
 	end
 
 	def iphone?
-		self.user_agent =~ /iP(?:hone|od)/
+		false
 	end
 end
 
@@ -182,6 +196,8 @@ def fake_plugin( name_sym, cgi=nil, base=nil, &block )
 
 	file_path = plugin_path( name_sym, base )
 	plugin_name = File.basename( file_path, ".rb" )
+
+	plugin.instance_variable_set(:@cache_path, @cache_path)
 
 	plugin.instance_eval do
 		eval( File.read( file_path ), binding,

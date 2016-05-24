@@ -19,14 +19,7 @@
 #
 
 def picasa( src, alt = "photo", place = 'photo' )
-	src.sub!( %r|/s\d+/|, "/s200/" ) if @conf.iphone?
-	
-	if @cgi.mobile_agent?
-		body = %Q|<a href="#{src}">#{alt}</a>|
-	else
-		body = %Q|<img title="#{alt}" alt="#{alt}" src="#{src}" class="#{place} picasa">|
-	end
-	body
+	%Q|<img title="#{alt}" alt="#{alt}" src="#{src}" class="#{place} picasa">|
 end
 
 def picasa_left( src, alt = "photo" )
@@ -45,7 +38,7 @@ if /\A(form|edit|preview|showcomment)\z/ === @mode then
 end
 
 add_edit_proc do |date|
-	unless @conf['picasa.user'] 
+	unless @conf['picasa.user']
 		'<p>[ERROR] picasa.rb: Picasa username is not specified.</p>'
 	else
 		<<-HTML
@@ -53,4 +46,20 @@ add_edit_proc do |date|
 			<div id="plugin_picasa"></div>
 		HTML
 	end
+end
+
+add_conf_proc( 'picasa', 'Picasa' ) do
+	if @mode == 'saveconf'
+		@conf['picasa.user'], = @cgi.params['picasa.user']
+		@conf['picasa.default_size'] = @cgi.params['picasa.default_size'][0].to_i
+		@conf['picasa.default_size'] = 400 if @conf['picasa.default_size'] == 0
+	end
+
+	<<-HTML
+	<h3 class="subtitle">Picasa user name</h3>
+	<p><input name="picasa.user" value="#{h @conf['picasa.user']}"></p>
+
+	<h3 class="subtitle">default size</h3>
+	<p><input name="picasa.default_size" value="#{h @conf['picasa.default_size']}"></p>
+	HTML
 end

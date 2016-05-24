@@ -80,7 +80,7 @@ $(function () {
 			var timerId = this.setErrorHandler();
 			var self = this;
 			$.ajax({
-				url: 'http://picasaweb.google.com/data/feed/api/user/' + this.userId,
+				url: '//picasaweb.google.com/data/feed/api/user/' + this.userId,
 				data: 'alt=json-in-script&max-results=25&thumbsize=128c&start-index=' + this.album_start_index,
 				dataType: 'jsonp',
 				success: function (data) {
@@ -99,7 +99,7 @@ $(function () {
 		getPhotos: function (albumId, fn) {
 			var timerId = this.setErrorHandler();
 			$.ajax({
-				url: 'http://picasaweb.google.com/data/feed/api/user/' + this.userId + '/albumid/' + albumId,
+				url: '//picasaweb.google.com/data/feed/api/user/' + this.userId + '/albumid/' + albumId,
 				data: 'alt=json-in-script&imgmax=' + this.imgMax + '&thumbsize=200',
 				dataType: 'jsonp',
 				success: function (data) {
@@ -113,7 +113,7 @@ $(function () {
 			var timerId = this.setErrorHandler();
 			var self = this;
 			$.ajax({
-				url: 'http://picasaweb.google.com/data/feed/api/user/' + this.userId,
+				url: '//picasaweb.google.com/data/feed/api/user/' + this.userId,
 				data: 'alt=json-in-script&imgmax=' + this.imgMax + '&thumbsize=200&kind=photo&max-results=25&start-index=' + this.recently_uploaded_photo_start_index,
 				dataType: 'jsonp',
 				success: function (data) {
@@ -222,101 +222,47 @@ $(function () {
 
 	var service = new PicasaService($tDiary.plugin.picasa.userId, $tDiary.plugin.picasa.imgMax);
 	var loading = new CanvasLoadingImage();
-	
-	var showRecentlyPhotos = function() {
-		$('h3.plugin_picasa span').unbind();
-		service.setRecentlyUploadedPhotoStartIndex(1);
-		loading.start();
-		$(loading.canvas).show();
-		service.getPhotosRecentlyUploaded(function (photos) {
-			$(loading.canvas).hide();
-			loading.stop();
-			$('h3.plugin_picasa span')
-				.css('cursor', 'pointer')
-				.attr('title', 'アルバム一覧を表示する')
-				.click(function() {
-					$(this).unbind('click');
-					service.setAlbumStartIndex(1);
-					$('h3.plugin_picasa span.title').remove();
-					$('#albums').remove();
-					$('.photo').remove();
-					$('<ul>').css({
-						'overflow': 'auto',
-						'height': '300px'
-					}).attr('id', 'albums').addClass('album')
-					.scroll(function(){
-					if (($(this).height() + $(this).scrollTop()) > ($(this).get(0).scrollHeight - 250)) {
-						if (!service.active && service.hasMoreAlbums()) {
-							service.active = true;
-							service.getAlbums(function(next_albums) {
-								service.active = false;
-								$.each(next_albums, function(m, next_album) {
-									showAlbum(next_album);
-								});
-							});
-						}
-					}
-					})
-					.appendTo('#plugin_picasa');
-				
-					$(loading.canvas).show();
-					loading.start();
-					service.getAlbums(function (albums) {
-						$(loading.canvas).hide();
-						loading.stop();
-						$.each(albums, function(l, album) {
-							showAlbum(album)
-						});
-						$('<input>')
-							.attr({
-								'type': 'button',
-								'value': '最近アップロードした写真の一覧を表示する'
-							})
-							.insertAfter('#plugin_picasa')
-							.click(function(){
-								$(this).remove();
-								$('h3.plugin_picasa span.title').remove();
-								$('#albums').remove();
-								$('.photo').remove();
-								showRecentlyPhotos();
-							});
+
+	var showAlbums = function(){
+		service.setAlbumStartIndex(1);
+		$('h3.plugin_picasa span.title').remove();
+		$('#albums').remove();
+		$('.photo').remove();
+		$('<ul>').css({
+			'overflow': 'auto',
+			'height': '300px'
+		}).attr('id', 'albums').addClass('album')
+		.scroll(function(){
+		if (($(this).height() + $(this).scrollTop()) > ($(this).get(0).scrollHeight - 250)) {
+			if (!service.active && service.hasMoreAlbums()) {
+				service.active = true;
+				service.getAlbums(function(next_albums) {
+					service.active = false;
+					$.each(next_albums, function(m, next_album) {
+						showAlbum(next_album);
 					});
 				});
-			$('<span>', {
-				text: ' > Recently uploaded photos'
-			}).addClass('title').appendTo('h3.plugin_picasa');
-			$('<div>')
-				.css({
-					'overflow': 'auto',
-					'height': '300px'
-				})
-				.attr('id', 'photos')
-				.addClass('photo')
-				.appendTo('#plugin_picasa')
-				.scroll(function(){
-					if (($(this).height() + $(this).scrollTop()) > ($(this).get(0).scrollHeight - 400)) {
-						if (!service.active && service.hasMorePhotos()) {
-							service.active = true;
-							service.getPhotosRecentlyUploaded(function(next_photos) {
-								service.active = false;
-								$.each(next_photos, function(j, next_photo) {
-									showPhoto(next_photo);
-								});
-							});
-						}
-					}
-				});
-			$.each(photos, function(i, photo){
-				showPhoto(photo);
+			}
+		}
+		})
+		.appendTo('#plugin_picasa');
+
+		$(loading.canvas).show();
+		loading.start();
+		service.getAlbums(function (albums) {
+			$(loading.canvas).hide();
+			loading.stop();
+			$.each(albums, function(l, album) {
+				showAlbum(album)
 			});
 		});
-	};
+	}
 
 	$('#plugin_picasa_recent').click(function(){
 		$('#plugin_picasa')
 			.css('height', '300px')
 			.empty();
 		$(loading.canvas).appendTo($('#plugin_picasa'));
-		showRecentlyPhotos();
+		showAlbums();
 	});
 });

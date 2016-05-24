@@ -6,7 +6,7 @@
 
 # enable social button names
 @conf['socialbutton.enables'] ||= 'twitter,hatena,facebook_like'
-# screen name of the user to attribute the tweet to 
+# screen name of the user to attribute the tweet to
 @conf['socialbutton.twitter.via'] ||= ''
 
 def socialbutton_js_settings
@@ -14,7 +14,7 @@ def socialbutton_js_settings
 	enable_js('socialbutton.js')
 	add_js_setting('$tDiary.plugin.socialbutton')
 	# convert array to json
-	add_js_setting('$tDiary.plugin.socialbutton.enables', 
+	add_js_setting('$tDiary.plugin.socialbutton.enables',
 						%Q|["#{@conf['socialbutton.enables'].split(',').join('", "')}"]|)
 
 	if @conf['socialbutton.twitter.via'] != ''
@@ -23,13 +23,6 @@ def socialbutton_js_settings
 		options = "{}"
 	end
 	add_js_setting('$tDiary.plugin.socialbutton.options', options)
-end
-
-socialbutton_footer = Proc.new { %Q|<div class="socialbuttons"></div>| }
-if blogkit?
-	add_body_leave_proc(socialbutton_footer)
-else
-	add_section_leave_proc(socialbutton_footer)
 end
 
 add_conf_proc('socialbutton', @socialbutton_label_conf) do
@@ -56,5 +49,14 @@ add_conf_proc('socialbutton', @socialbutton_label_conf) do
 	HTML
 end
 
-# load javascript
-socialbutton_js_settings()
+if @mode =~ /^(latest|day|month|nyear)$/
+	socialbutton_footer = Proc.new { %Q|<div class="socialbuttons"></div>| }
+	if respond_to?(:blogkit?) && blogkit?
+		add_body_leave_proc(socialbutton_footer)
+	else
+		add_section_leave_proc(socialbutton_footer)
+	end
+
+	# load javascript
+	socialbutton_js_settings()
+end

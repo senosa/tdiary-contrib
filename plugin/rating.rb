@@ -1,12 +1,12 @@
 # $Revision:0.1$
-# rating.rb: Ê£¿ô¼´¤Ë¤è¤ëµ­»öÉ¾²Á¤È¥°¥é¥ÕÉ½¼¨
+# rating.rb: è¤‡æ•°è»¸ã«ã‚ˆã‚‹è¨˜äº‹è©•ä¾¡ã¨ã‚°ãƒ©ãƒ•è¡¨ç¤º
 # for tDiary
 #
-# »È¤¤Êı
-# ¤½¤Î¤Ş¤Ş plugin ¥Ç¥£¥ì¥¯¥È¥ê¤ËÃÖ¤­¤Ş¤¹¡£
-# 'ÀßÄê' -> 'rating.rb Configuration' ¤Ç¡¢É¾²Á¼´¤ä
-# É½¼¨ÆâÍÆ¤òÀßÄê¡£
-# ¤¯¤ï¤·¤¯¤Ï 
+# ä½¿ã„æ–¹
+# ãã®ã¾ã¾ plugin ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«ç½®ãã¾ã™ã€‚
+# 'è¨­å®š' -> 'rating.rb Configuration' ã§ã€è©•ä¾¡è»¸ã‚„
+# è¡¨ç¤ºå†…å®¹ã‚’è¨­å®šã€‚
+# ãã‚ã—ãã¯
 # http://www.maripo.jp/diary/?date=20071019
 #
 # Copyright (c) 2007 Mariko/Maripo GODA <god@maripo.jp>
@@ -51,21 +51,21 @@ add_conf_proc('rating', 'rating.rb Configuration') do
 
     form_string += <<HTML
 <p>
-¥Õ¥£¡¼¥É¥Ğ¥Ã¥¯¥Õ¥©¡¼¥à¤ÎÀßÄê¤ò¤·¤Ş¤¹¡£¼´¤Ï¤¤¤¯¤Ä¤Ç¤âºîÀ®¤¹¤ë¤³¤È¤¬¤Ç¤­¤Ş¤¹¡£
+ãƒ•ã‚£ãƒ¼ãƒ‰ãƒãƒƒã‚¯ãƒ•ã‚©ãƒ¼ãƒ ã®è¨­å®šã‚’ã—ã¾ã™ã€‚è»¸ã¯ã„ãã¤ã§ã‚‚ä½œæˆã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 </p>
 <p>
-<a href="http://www.maripo.jp/">ºî¼Ô</a>¤Î <a href="http://www.maripo.jp/diary/?date=20071019">blog</a> ¤ËÄÉ²Ã¾ğÊó¤¬½ñ¤¤¤Æ¤¢¤ë¤«¤â¤·¤ì¤Ş¤»¤ó¡£
+<a href="http://www.maripo.jp/">ä½œè€…</a>ã® <a href="http://www.maripo.jp/diary/?date=20071019">blog</a> ã«è¿½åŠ æƒ…å ±ãŒæ›¸ã„ã¦ã‚ã‚‹ã‹ã‚‚ã—ã‚Œã¾ã›ã‚“ã€‚
 </p>
-<h3>ÀßÄêÊıË¡</h3>
+<h3>è¨­å®šæ–¹æ³•</h3>
 <ul>
-<li>½ç ¡Ä É½¼¨¤µ¤ì¤ë½çÈÖ¤Ç¤¹¡£¾®¤µ¤¤¤Û¤¦¤«¤é½ç¤ËÊÂ¤Ó¤Ş¤¹¡£ÈÖ¹æ¤¬Èô¤ó¤Ç¤âOK¡£</li>
-<li>É½¼¨ ¡Ä ¤¤¤é¤Ê¤¤¼´¤Ï¥Á¥§¥Ã¥¯¤ò³°¤·¤Æ¤·¤Ş¤Ã¤Æ¤¯¤À¤µ¤¤¡£
-<li>¼´¤ÎÌ¾Á° ¡Ä (Îã) "¤³¤Îµ­»ö¤Ï»²¹Í¤Ë¤Ê¤ê¤Ş¤·¤¿¤«"</li>
-<li>ºÇÄã¥é¥Ù¥ë ¡Ä Îã "¤Ş¤Ã¤¿¤¯»²¹Í¤Ë¤Ê¤é¤Ê¤¤"</li>
-<li>ºÇ¹â¥é¥Ù¥ë ¡Ä Îã "¤È¤Æ¤â»²¹Í¤Ë¤Ê¤Ã¤¿"</li>
-<li>ÁªÂò»è¿ô ¡Ä Îã : 1¡Á5¤Î5ÃÊ³¬¤Ê¤é "5"</li>
+<li>é † â€¦ è¡¨ç¤ºã•ã‚Œã‚‹é †ç•ªã§ã™ã€‚å°ã•ã„ã»ã†ã‹ã‚‰é †ã«ä¸¦ã³ã¾ã™ã€‚ç•ªå·ãŒé£›ã‚“ã§ã‚‚OKã€‚</li>
+<li>è¡¨ç¤º â€¦ ã„ã‚‰ãªã„è»¸ã¯ãƒã‚§ãƒƒã‚¯ã‚’å¤–ã—ã¦ã—ã¾ã£ã¦ãã ã•ã„ã€‚
+<li>è»¸ã®åå‰ â€¦ (ä¾‹) "ã“ã®è¨˜äº‹ã¯å‚è€ƒã«ãªã‚Šã¾ã—ãŸã‹"</li>
+<li>æœ€ä½ãƒ©ãƒ™ãƒ« â€¦ ä¾‹ "ã¾ã£ãŸãå‚è€ƒã«ãªã‚‰ãªã„"</li>
+<li>æœ€é«˜ãƒ©ãƒ™ãƒ« â€¦ ä¾‹ "ã¨ã¦ã‚‚å‚è€ƒã«ãªã£ãŸ"</li>
+<li>é¸æŠè‚¢æ•° â€¦ ä¾‹ : 1ï½5ã®5æ®µéšãªã‚‰ "5"</li>
 </p>
-<h3>ÀßÄêÆâÍÆ</h3>
+<h3>è¨­å®šå†…å®¹</h3>
 <form>
 <table>
 HTML
@@ -74,13 +74,13 @@ HTML
     rating_config.each { |axis_config|
         form_string += <<HTML
 <tr>
-<td>½ç:<input type="text" size="2" name="order#{index}" value="#{axis_config.order}"></td>
+<td>é †:<input type="text" size="2" name="order#{index}" value="#{axis_config.order}"></td>
 <td>
-¼´¤ÎÌ¾Á°:<input type="text" size="16" name="label#{index}" value="#{axis_config.label}">¡¡
-ºÇÄã¥é¥Ù¥ë:<input type="text" size="10" name="label_min#{index}" value="#{axis_config.label_min}">¡¡
-ºÇ¹â¥é¥Ù¥ë:<input type="text" size="10" name="label_max#{index}" value="#{axis_config.label_max}">¡¡
-ÁªÂò»è¿ô:<input type="text" size="4" name="range#{index}" value="#{axis_config.range.to_s}">¡¡
-É½¼¨:<input type="checkbox" name="display#{index}" value="#{axis_config.label_max}" #{axis_config.check_label}>
+è»¸ã®åå‰:<input type="text" size="16" name="label#{index}" value="#{axis_config.label}">ã€€
+æœ€ä½ãƒ©ãƒ™ãƒ«:<input type="text" size="10" name="label_min#{index}" value="#{axis_config.label_min}">ã€€
+æœ€é«˜ãƒ©ãƒ™ãƒ«:<input type="text" size="10" name="label_max#{index}" value="#{axis_config.label_max}">ã€€
+é¸æŠè‚¢æ•°:<input type="text" size="4" name="range#{index}" value="#{axis_config.range.to_s}">ã€€
+è¡¨ç¤º:<input type="checkbox" name="display#{index}" value="#{axis_config.label_max}" #{axis_config.check_label}>
 </td>
 </tr>
 HTML
@@ -88,12 +88,12 @@ HTML
     }
     form_string += <<HTML
 <tr>
-<td>ÄÉ²Ã</td>
+<td>è¿½åŠ </td>
 <td>
-¼´¤ÎÌ¾Á°:<input type="text" size="16" name="label_new"> 
-ºÇÄã¥é¥Ù¥ë:<input type="text" size="10" name="label_min_new"> 
-ºÇ¹â¥é¥Ù¥ë:<input type="text" size="10" name="label_max_new"> 
-ÁªÂò»è¿ô:<input type="text" size="4" name="range_new">
+è»¸ã®åå‰:<input type="text" size="16" name="label_new">
+æœ€ä½ãƒ©ãƒ™ãƒ«:<input type="text" size="10" name="label_min_new">
+æœ€é«˜ãƒ©ãƒ™ãƒ«:<input type="text" size="10" name="label_max_new">
+é¸æŠè‚¢æ•°:<input type="text" size="4" name="range_new">
 </td>
 </tr>
 </table>
@@ -125,7 +125,7 @@ add_body_leave_proc do |date|
 onclick="with(this.parentNode.style){if(overflow=='hidden'){overflow='visible';}else{overflow='hidden';}}"
 style="cursor:hand;"
 class="ratingGraphOpener">
-[Ê¬ÉÛ¤ò¤ß¤ë]
+[åˆ†å¸ƒã‚’ã¿ã‚‹]
 </div>
 <div class="ratingGraphContent">
 HTML
@@ -133,13 +133,13 @@ HTML
     form_string += ('<form action="./"><input type="hidden" name="comment" value="submit"><input type="hidden" name="body" value="rating"><input type="hidden" name="body" value="rating"><input type="hidden" name="name" value=""><input type="hidden" value="' + date.strftime('%Y%m%d') + '"><div class="ratingForm">')
     @rating_config.each{|axis_config|
 
-        if !axis_config.display 
+        if !axis_config.display
             next
         end
 
         # add axis info
         form_string += ('<div class="ratingQuestion"><span class="ratingLabel">' + axis_config.label + '</span>')
-        
+
         # add radio buttons
         form_string += ('<span class="ratingRadioButtons"><span class="ratingLabelMin">' + axis_config.label_min + '</span>')
 
@@ -153,7 +153,7 @@ HTML
 class="ratingGraphRank">' + (current_rank + 1).to_s + '</div><div
 class="ratingGraphBar" style="width:' +
 todays_eval.get_graph_length(axis_config.id, current_rank).to_s +
-'px"></div><span class="ratingGraphValue"> (' + todays_eval.get_value(axis_config.id, current_rank).to_s + 'É¼)</span></div>')
+'px"></div><span class="ratingGraphValue"> (' + todays_eval.get_value(axis_config.id, current_rank).to_s + 'ç¥¨)</span></div>')
             current_rank += 1
         end
         graph_string += '</div>' #end "graphBox"
@@ -170,7 +170,7 @@ todays_eval.get_graph_length(axis_config.id, current_rank).to_s +
 <div style="clear:both;height:0px;"></div>
 HTML
     form_string += '<input type="hidden" name="date" value="' + date.strftime('%Y%m%d') + '">'
-    form_string += '<input type="submit" value="É¾²Á¤¹¤ë"></div></form>'+"\n"
+    form_string += '<input type="submit" value="è©•ä¾¡ã™ã‚‹"></div></form>'+"\n"
     (form_string + graph_string)
 
 end
@@ -253,7 +253,7 @@ class AxisConfig
     @id
     @order
     @display = true
-    
+
     #accessors
     attr_reader :label, :label_max, :label_min, :range, :id, :order, :display
 
@@ -287,11 +287,11 @@ class AxisConfig
     def enable
         @hidden = false
     end #end disable
-    
+
     def check_label
         return @display? "checked":""
     end #end check_label
-    
+
 end
 
 #########################################
@@ -357,7 +357,7 @@ class DateEval
 
     def vote(id, rank)
         unless @axes.key?(id)
-            @axes[id] = Array.new        
+            @axes[id] = Array.new
         end
         if @axes[id][rank] != nil
             @axes[id][rank] += 1

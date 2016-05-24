@@ -1,14 +1,14 @@
 #!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
-# image-gallery.rb $Revision: 2.0.4 $
+# image-gallery.rb $Revision: 2.1.0 $
 #
 # Copyright (c) 2005-2013 N.KASHIJUKU <n-kashi[at]whi.m-net.ne.jp>
 # You can redistribute it and/or modify it under GPL2.
 
-if RUBY_VERSION >= '1.9.0' 
-  Encoding::default_external = 'UTF-8' 
-  $LOAD_PATH.push('./') 
-end 
+if RUBY_VERSION >= '1.9.0'
+  Encoding::default_external = 'UTF-8'
+  $LOAD_PATH.push('./')
+end
 
 if FileTest::symlink?( __FILE__ ) then
   org_path = File::dirname( File::readlink( __FILE__ ) )
@@ -16,6 +16,7 @@ else
   org_path = File::dirname( __FILE__ )
 end
 $:.unshift( org_path.untaint )
+$:.unshift( (org_path + '/lib').untaint ) unless $:.include?( org_path + '/lib' )
 require 'tdiary'
 require 'pstore'
 require 'date'
@@ -29,7 +30,7 @@ module TDiary
     attr_writer :file, :url, :title, :subtitle, :date, :width, :height, :type
   end
 
-  
+
   class TDiaryGallery < ::TDiary::TDiaryBase
     MAX_PAGES = 20
     ORDER_OPTIONS = [
@@ -43,7 +44,7 @@ module TDiary
 
     def initialize( cgi, rhtml, conf )
       super
-      @img_version = "2.0.4"
+      @img_version = "2.1.0"
       @image_hash = Hash[]
       @image_num = 0
       @image_keys = []
@@ -71,7 +72,7 @@ module TDiary
       @width  = conf.options['image-gallery.width']
       @width  = "160" if @width == nil
       @vwidth = conf.options['image-gallery.vwidth']
-      @vwidth = "640" if @vwidth == nil 
+      @vwidth = "640" if @vwidth == nil
       @show_exif = conf.options['image-gallery.show_exif']
       @show_exif = false if @show_exif == nil
       @use_mid_image = conf.options['image-gallery.use_mid_image']
@@ -212,7 +213,7 @@ module TDiary
       rescue
       end
     end
-    
+
     def format_links(count)
       page_count = (count - 1) / @num + 1
       current_page = @start / @num + 1
@@ -306,7 +307,7 @@ module TDiary
         elsif @page_month != ""
           prevmonth = (@page_date << 1).strftime("%Y%m")
           nextmonth = (@page_date >> 1).strftime("%Y%m")
-          if @name_filter[0] == ?^ and @name_filter[5] == ?/ 
+          if @name_filter[0] == ?^ and @name_filter[5] == ?/
             prevmonth = %Q[^#{prevmonth[0,4]}/#{prevmonth}]
             nextmonth = %Q[^#{nextmonth[0,4]}/#{nextmonth}]
           elsif @name_filter[0] == ?^

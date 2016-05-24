@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # image_gps.rb $Revision: 1.1 $
-# 
+#
 # 概要:
-# 
+#
 #
 # 使い方:
 # 絵日記Plugin(image.rb)とおなじ
@@ -43,29 +43,37 @@ def image( id, alt = 'image', thumbnail = nil, size = nil, place = 'photo' )
     image = image_list( @image_date )[id.to_i]
     image_t = image_list( @image_date )[thumbnail.to_i] if thumbnail
   end
-  if size then
+
+  if size
     if size.kind_of?(Array)
-      size = %Q[ width="#{size[0]}" height="#{size[1]}"]
+      if size.length > 1
+        size = %Q| width="#{h size[0]}" height="#{h size[1]}"|
+      elsif size.length > 0
+        size = %Q| width="#{h size[0]}"|
+      end
     else
-      size = %Q[ width="#{size.to_i}"]
+      size = %Q| width="#{size.to_i}"|
     end
-  else
-    size = ""
+  elsif @image_maxwidth and not @conf.secure then
+    _, w, _ = image_info( "#{@image_dir}/#{image}".untaint )
+    if w > @image_maxwidth then
+      size = %Q[ width="#{h @image_maxwidth}"]
+    else
+      size = ""
+    end
   end
-  
+
   show_exif_info = @conf['image_gps.show_exif_info']
   show_exif_info = '' if show_exif_info.nil?
   google_maps_api_key = @conf['image_gps.google_maps_api_key']
   google_maps_api_key = '' if google_maps_api_key.nil?
   if (@conf['image_gps.map_link_url'].nil? || @conf['image_gps.map_link_url'].empty?)
-    map_link_url = '"http://maps.google.co.jp/maps?q=#{lat},#{lon}"'
+    map_link_url = '"//maps.google.co.jp/maps?q=#{lat},#{lon}"'
   else
     map_link_url = '"'+@conf['image_gps.map_link_url']+'"'
   end
 
   exif = ExifParser.new("#{@image_dir}/#{image}".untaint) rescue nil
-
-  google = "http://maps.google.co.jp"
 
   if exif
     #GPS Info
@@ -92,8 +100,8 @@ def image( id, alt = 'image', thumbnail = nil, size = nil, place = 'photo' )
       detail += "#{exif[e].to_s}"+sep if exif.tag?(e)
     }
     unless lat.nil?
-      unless (google_maps_api_key == '' || @conf.smartphone?)
-        map_img = %Q["http://maps.googleapis.com/maps/api/staticmap?format=gif&amp;]
+      unless google_maps_api_key == ''
+        map_img = %Q["//maps.googleapis.com/maps/api/staticmap?format=gif&amp;]
         map_img += %Q[center=#{lat},#{lon}&amp;zoom=14&amp;size=200x200&amp;markers=#{lat},#{lon}&amp;]
         map_img += %Q[key=#{google_maps_api_key}&amp;sensor=false"]
       end
@@ -111,21 +119,14 @@ def image( id, alt = 'image', thumbnail = nil, size = nil, place = 'photo' )
 
   url  = ''
 
-  if @conf.mobile_agent?
-    url += %Q[<a href=#{google}/maps/m?q=#{lat},#{lon}>] unless lat.nil?
-    url += thumbnail ? img_t : img
-    url += %Q[</a>] unless lat.nil?
-  else
-    url += %Q[<div class="photo_detail">]
-    url += %Q[<a href="#{@image_url}/#{image}">]
-    url += thumbnail ? img_t : img
-    url += %Q[</a>]
-    url += %Q[#{detail}] if detail
-    url += %Q[</div>]
-  end
+  url += %Q[<div class="photo_detail">]
+  url += %Q[<a href="#{@image_url}/#{image}">]
+  url += thumbnail ? img_t : img
+  url += %Q[</a>]
+  url += %Q[#{detail}] if detail
+  url += %Q[</div>]
 
   url
-
 end
 add_header_proc do
   if @mode !~ /conf$/ and not bot? then
